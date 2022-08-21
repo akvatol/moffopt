@@ -1,27 +1,23 @@
-from parser import Parser
+from pathlib import Path
+from tempfile import NamedTemporaryFile
+from json import dump
 
 
-class ChildParser(Parser):
+from parser import DemoParserCoordinates
 
-    def _get_content(self, _):
-        """Mock"""
-
-    def _parse_x(self, _) -> str:
-        return "a"
-
-    def _parse_y(self, _) -> str:
-        return "b"
-
-    def _parse_parse_(self, _) -> str:
-        return "c"
-
-    def _parse__parse_(self, _) -> str:
-        return "d"
+MODE_WRITE_TEXT = "w+t"
 
 
-def test_parser():
+def test_coordinates():
+    data = {"x": 1, "y": 2, "z": 3}
 
-    assert ChildParser().parse("...") == {
-        "x": "a", "y": "b",
-        "parse_": "c", "_parse_": "d"
-    }
+    with NamedTemporaryFile(MODE_WRITE_TEXT) as file:
+        dump(obj=data, fp=file)
+        file.seek(0)  # TODO: How it works?
+
+        filepath = Path(file.name)
+        coordinates = DemoParserCoordinates(filepath)
+
+        assert coordinates.x == 1
+        assert coordinates.y == 2
+        assert coordinates.z == 3

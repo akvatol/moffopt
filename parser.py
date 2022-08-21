@@ -1,51 +1,24 @@
-from typing import Any, Tuple
+from pathlib import Path
+from json import load
 
 
-class Parser:
-    """
-    Provides `parser` method which executes all methods started from `_parse_`
-    and returns `dict` where:
-    * key is `_parse_method` name without `_parse_`
-    * value is `_parse_method` result
+class DemoParserCoordinates:
 
-    For example:
-    ```
-    class pKaParser(Parser):
-        def _parse_pKa(self, content: str) -> str:
-            return "1.0"
+    def __init__(self, filepath: Path):
+        self.__filepath = filepath
 
-    pka = pKaParser().parse(filepath)  # pka = {"pKa": "1.0"}
-    ```
-    """
+    @property
+    def x(self) -> float:
+        return self.__parse()["x"]
 
-    _KEYWORLD_PARSE = "_parse_"
-    _PLACEHOLDER_EMPTY = ""
-    _FIRST_ENTRY = 1
+    @property
+    def y(self) -> float:
+        return self.__parse()["y"]
 
-    def parse(self, filepath: str) -> dict:
-        content = self._get_content(filepath)
-        return dict(
-            self._get_parsed_name_value_pair(method_name, content)
-            for method_name in dir(self) if self._is_parse_method(method_name)
-        )
+    @property
+    def z(self) -> float:
+        return self.__parse()["z"]
 
-    def _get_content(self, filepath) -> str:
-        with open(filepath) as file:
-            return file.read()
-
-    def _is_parse_method(self, method_name: str) -> bool:
-        return method_name.startswith(self._KEYWORLD_PARSE)
-
-    def _get_parsed_name_value_pair(self, method_name: str, content: str) -> Tuple[str, Any]:
-        return (
-            self._get_parsed_value_name(method_name),
-            self._execute_parse_method(method_name, content)
-        )
-
-    def _get_parsed_value_name(self, method_name: str) -> str:
-        return method_name.replace(
-            self._KEYWORLD_PARSE, self._PLACEHOLDER_EMPTY, self._FIRST_ENTRY
-        )
-
-    def _execute_parse_method(self, method_name: str, content: str) -> Any:
-        return getattr(self, method_name)(content)
+    def __parse(self) -> dict:
+        with open(self.__filepath) as file:
+            return load(file)

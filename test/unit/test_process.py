@@ -1,4 +1,4 @@
-from task_runner import Process, execute_process, execute_processes_concurently
+from process import Process, execute_process, execute_processes_concurently
 
 
 def test_execute_process():

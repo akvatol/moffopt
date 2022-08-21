@@ -1,28 +1,27 @@
-from task_runner import Task, run_task, run_tasks_concurently
+from task_runner import Process, execute_process, execute_processes_concurently
 
 
-def test_run_task():
+def test_execute_process():
 
     parameters = ["echo", "hello world"]
 
-    task = Task(parameters=parameters)
-    completed_process  = run_task(task)
+    process = Process(args=parameters)
+    completed_process  = execute_process(process)
 
     assert completed_process.args == parameters
     assert completed_process.returncode == 0
 
-    assert completed_process.stdout == b"hello world\n"
-    assert completed_process.stderr == b""
+    assert completed_process.stdout == "hello world\n"
+    assert completed_process.stderr == ""
 
 
-def test_run_tasks_concurently():
+def test_execute_processes_concurently():
 
-    tasks = [
-        Task(parameters=["echo", "hello"]),
-        Task(parameters=["echo", "world"]),
+    parameters = [
+        Process(args=["echo", "hello"]),
+        Process(args=["echo", "world"]),
     ]
-    completed_processes = run_tasks_concurently(tasks)
+    completed_processes = execute_processes_concurently(parameters)
 
-    assert len(completed_processes) == len(tasks)
-    assert completed_processes[0].stdout == b"hello\n"
-    assert completed_processes[1].stdout == b"world\n"
+    assert completed_processes[0].stdout == "hello\n"
+    assert completed_processes[1].stdout == "world\n"

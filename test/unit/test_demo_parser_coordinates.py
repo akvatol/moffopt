@@ -3,7 +3,7 @@ from tempfile import NamedTemporaryFile
 from json import dump
 
 
-from parser import DemoParserCoordinates
+from demo_parser_coordinates import DemoParserCoordinates
 
 MODE_WRITE_TEXT = "w+t"
 

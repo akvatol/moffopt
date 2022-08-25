@@ -22,7 +22,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: install code quality requirements
-        run: pip install code_quality/requirements.txt
+        run: pip install --requirement code_quality/requirements.txt
 
       - name: start pylint
         run: pylint moffopt test
@@ -52,7 +52,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: install moffopt and test requirements
-        run: pip install moffopt/requirements.txt test/requirements.txt
+        run: pip install --requirement moffopt/requirements.txt test/requirements.txt
 
       - name: start unit tests
         run: pytest test/unit

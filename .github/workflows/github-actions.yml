@@ -21,13 +21,15 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: install requirements
-        run: pip install -r requirements_all.txt
+      - name: install all requirements
+        run: pip install -r all_requirements.txt
 
       - name: start pylint
+        run: pylint moffopt
         run: pylint test
 
       - name: start mypy
+        run: mypy moffopt
         run: mypy test
 
       - name: start unit tests
@@ -56,8 +58,8 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: install requirements
-        run: pip install -r requirements_all.txt
+      - name: install all requirements
+        run: pip install -r all_requirements.txt
 
       - name: start unit tests
         run: pytest test/unit

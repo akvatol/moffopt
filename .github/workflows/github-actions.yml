@@ -2,9 +2,9 @@ name: CI
 on: [pull_request]
 jobs:
   test:
-    runs-on: ["ubuntu-20.04", "windows-2019"]
     strategy:
       matrix:
+        runs-on: ["ubuntu-20.04", "windows-2019"]
         python-version: ["3.7", "3.10"]
     steps:
       - uses: actions/checkout@v1

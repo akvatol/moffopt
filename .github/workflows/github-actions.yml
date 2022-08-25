@@ -53,8 +53,8 @@ jobs:
 
       - name: install moffopt and test requirements
         run: |
-        pip install --requirement moffopt/requirements.txt
-        pip install --requirement test/requirements.txt
+          pip install --requirement moffopt/requirements.txt
+          pip install --requirement test/requirements.txt
 
       - name: start unit tests
         run: pytest test/unit

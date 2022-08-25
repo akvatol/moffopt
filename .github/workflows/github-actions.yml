@@ -1,15 +1,43 @@
 name: CI
 on: pull_request
-
 jobs:
 
-  test:
 
-    runs-on: ${{ matrix.os }}
+  main-validation:
+
+    runs-on: ubuntu-20.04
     strategy:
       max-parallel: 1
       matrix:
-        os: [ubuntu-20.04, windows-2019]
+        python-version: ["3.7", "3.10"]
+
+    steps:
+
+      - name: checkout repository
+        uses: actions/checkout@v1
+
+      - name: install python
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: install requirements
+        run: pip install -r requirements_all.txt
+
+      - name: start unit tests
+        run: pytest test/unit
+
+      - name: start integration tests
+        run: pytest test/integration
+
+
+  windows-validation:
+
+    needs: main-validation
+    runs-on: windows-2019
+    strategy:
+      max-parallel: 1
+      matrix:
         python-version: ["3.7", "3.10"]
 
     steps:

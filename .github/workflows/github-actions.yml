@@ -10,7 +10,7 @@ jobs:
       max-parallel: 1
       matrix:
         os: [ubuntu-20.04, windows-2019]
-        python-version: [3.7, 3.10]
+        python-version: ["3.7", "3.10"]
 
     steps:
 

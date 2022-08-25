@@ -27,6 +27,9 @@ jobs:
       - name: start pylint
         run: pylint test
 
+      - name: start mypy
+        run: mypy test
+
       - name: start unit tests
         run: pytest test/unit
 

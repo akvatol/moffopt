@@ -25,12 +25,10 @@ jobs:
         run: pip install -r all_requirements.txt
 
       - name: start pylint
-        run: pylint moffopt
-        run: pylint test
+        run: pylint moffopt test
 
       - name: start mypy
-        run: mypy moffopt
-        run: mypy test
+        run: mypy moffopt test
 
       - name: start unit tests
         run: pytest test/unit

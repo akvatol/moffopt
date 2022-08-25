@@ -1,2 +1,2 @@
--r requirements_dev.txt
+-r requirements_app.txt
 -r requirements_test.txt

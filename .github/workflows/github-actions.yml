@@ -24,6 +24,9 @@ jobs:
       - name: install requirements
         run: pip install -r requirements_all.txt
 
+      - name: start pylint
+        run: pylint test
+
       - name: start unit tests
         run: pytest test/unit
 

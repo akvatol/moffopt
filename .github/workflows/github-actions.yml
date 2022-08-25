@@ -27,3 +27,6 @@ jobs:
 
       - name: start unit tests
         run: pytest test/unit
+
+      - name: start integration tests
+        run: pytest test/integration

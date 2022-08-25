@@ -11,6 +11,7 @@ jobs:
         python-version: ["3.7", "3.10"]
 
   test-unit:
+    uses: setup-runners
     steps:
       - uses: actions/checkout@v1
       - name: setup python

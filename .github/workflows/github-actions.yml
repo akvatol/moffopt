@@ -14,10 +14,14 @@ jobs:
 
     steps:
 
-      - name: setup ${{ matrix.os }} ${{ matrix.python-version }}
+      - name: checkout repository
         uses: actions/checkout@v1
+
+      - name: install python
         uses: actions/setup-python@v1
+
+      - name: install requirements
         run: pip install -r requirements_test.txt
 
-      - name: unit
+      - name: start unit tests
         run: pytest test/unit

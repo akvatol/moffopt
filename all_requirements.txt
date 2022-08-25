@@ -1,2 +1,3 @@
+-r code_quality/requirements.txt
 -r moffopt/requirements.txt
 -r test/requirements.txt

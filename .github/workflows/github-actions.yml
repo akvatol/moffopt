@@ -3,7 +3,7 @@ on: pull_request
 jobs:
 
 
-  main-validation:
+  code-quality:
 
     runs-on: ubuntu-20.04
     strategy:
@@ -21,8 +21,8 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: install all requirements
-        run: pip install -r all_requirements.txt
+      - name: install code quality requirements
+        run: pip install code_quality/requirements.txt
 
       - name: start pylint
         run: pylint moffopt test
@@ -30,20 +30,15 @@ jobs:
       - name: start mypy
         run: mypy moffopt test
 
-      - name: start unit tests
-        run: pytest test/unit
 
-      - name: start integration tests
-        run: pytest test/integration
+  test:
 
-
-  windows-validation:
-
-    needs: main-validation
-    runs-on: windows-2019
+    needs: code-quality
+    runs-on: ${{ matrix.os }}
     strategy:
       max-parallel: 2
       matrix:
+        os: [ubuntu-20.04, windows-2019]
         python-version: ["3.7", "3.10"]
 
     steps:
@@ -56,8 +51,8 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: install all requirements
-        run: pip install -r all_requirements.txt
+      - name: install moffopt and test requirements
+        run: pip install moffopt/requirements.txt test/requirements.txt
 
       - name: start unit tests
         run: pytest test/unit

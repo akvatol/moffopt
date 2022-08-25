@@ -1,24 +1,23 @@
 name: CI
-on: [pull_request]
+on: pull_request
 
 jobs:
 
-  setup-runners:
-    runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        os: ["ubuntu-20.04", "windows-2019"]
-        python-version: ["3.7", "3.10"]
+  test:
 
-  test-unit:
-    uses: setup-runners
+    runs-on: ${{ matrix.os }}
+    strategy:
+      max-parallel: 1
+      matrix:
+        os: [ubuntu-20.04, windows-2019]
+        python-version: [3.7, 3.10]
+
     steps:
-      - uses: actions/checkout@v1
-      - name: setup python
+
+      - name: setup ${{ matrix.os }} ${{ matrix.python-version }}
+        uses: actions/checkout@v1
         uses: actions/setup-python@v1
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: install dependencies
         run: pip install -r requirements_test.txt
+
       - name: unit
         run: pytest test/unit

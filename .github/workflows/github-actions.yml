@@ -52,7 +52,9 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: install moffopt and test requirements
-        run: pip install --requirement moffopt/requirements.txt test/requirements.txt
+        run: |
+        pip install --requirement moffopt/requirements.txt
+        pip install --requirement test/requirements.txt
 
       - name: start unit tests
         run: pytest test/unit

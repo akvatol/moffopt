@@ -1,0 +1,67 @@
+name: CI
+on:
+  pull_request:
+    branches: main
+
+
+jobs:
+
+
+  code-quality:
+
+    runs-on: ubuntu-20.04
+    strategy:
+      max-parallel: 1
+      matrix:
+        python-version: ["3.7", "3.10"]
+
+    steps:
+
+      - name: checkout repository
+        uses: actions/checkout@v1
+
+      - name: install python
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: install code quality requirements
+        run: pip install --requirement code_quality/requirements.txt
+
+      - name: start pylint
+        run: pylint moffopt test code_quality
+
+      - name: start mypy
+        run: mypy moffopt test code_quality
+
+
+  test:
+
+    needs: code-quality
+    runs-on: ${{ matrix.os }}
+    strategy:
+      max-parallel: 2
+      matrix:
+        os: [ubuntu-20.04, windows-2019]
+        python-version: ["3.7", "3.10"]
+
+    steps:
+
+      - name: checkout repository
+        uses: actions/checkout@v1
+
+      - name: install python
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: install moffopt and test requirements
+        run: |
+          pip install --requirement moffopt/requirements.txt
+          pip install --requirement test/requirements.txt
+
+      - name: start unit tests
+        run: pytest test/unit
+
+      - name: start integration tests
+        run: pytest test/integration

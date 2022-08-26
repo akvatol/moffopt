@@ -10,48 +10,48 @@ from enum import Enum
 from pathlib import Path
 from subprocess import run
 from sys import argv
+from typing import Union
 from json import dumps, loads
 
 
 class RadonArgs(str, Enum):
-    radon = "radon"
-    json = "--json"
-    raw = "raw"
-    hal = "hal"
-    cc = "cc"
-    mi = "mi"
+    RADON = "radon"
+    JSON = "--json"
+    RAW = "raw"
+    HAL = "hal"
+    CC = "cc"
+    MI = "mi"
 
 
 def collect_radon_metrics(path: Path) -> dict:
     return {
-        RadonArgs.raw: collect_radon_metric_raw(path),
-        RadonArgs.hal: collect_radon_metric_hal(path),
-        RadonArgs.cc: collect_radon_metric_cc(path),
-        RadonArgs.mi: collect_radon_metric_mi(path),
+        RadonArgs.RAW: collect_radon_metric_raw(path),
+        RadonArgs.HAL: collect_radon_metric_hal(path),
+        RadonArgs.CC: collect_radon_metric_cc(path),
+        RadonArgs.MI: collect_radon_metric_mi(path),
     }
 
 
 def collect_radon_metric_raw(path: Path) -> dict:
-    return run_radon_with_json_flag(path, RadonArgs.raw)
+    return run_radon_with_json_flag(path, RadonArgs.RAW)
 
 
 def collect_radon_metric_hal(path: Path) -> dict:
-    return run_radon_with_json_flag(path, RadonArgs.hal)
+    return run_radon_with_json_flag(path, RadonArgs.HAL)
 
 
 def collect_radon_metric_cc(path: Path) -> dict:
-    return run_radon_with_json_flag(path, RadonArgs.cc)
+    return run_radon_with_json_flag(path, RadonArgs.CC)
 
 
 def collect_radon_metric_mi(path: Path) -> dict:
-    return run_radon_with_json_flag(path, RadonArgs.mi)
+    return run_radon_with_json_flag(path, RadonArgs.MI)
 
 
-def run_radon_with_json_flag(path: Path, metric: str) -> dict:
-    command = [RadonArgs.radon, metric, RadonArgs.json, path]
-    return loads(run(args=command, capture_output=True).stdout)
+def run_radon_with_json_flag(path: Union[Path, str], metric: str) -> dict:
+    command = [RadonArgs.RADON, metric, RadonArgs.JSON, path]
+    return loads(run(args=command, capture_output=True, check=True).stdout)
 
 
 if __name__ == "__main__":
-    path = Path(argv[1])
-    print(dumps(collect_radon_metrics(path), indent=4))
+    print(dumps(collect_radon_metrics(Path(argv[1])), indent=4))

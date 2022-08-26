@@ -1,2 +1,3 @@
 mypy~=0.9
 pylint~=2.14
+radon~=5.1

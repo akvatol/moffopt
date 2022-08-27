@@ -25,14 +25,16 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: install code quality requirements
-        run: pip install --requirement code_quality/requirements.txt
+      - name: install pylint and mypy
+        run: |
+          cat tools/requirements.txt | grep pylint | xargs pip install
+          cat tools/requirements.txt | grep mypy | xargs pip install
 
       - name: start pylint
-        run: pylint moffopt test code_quality
+        run: pylint moffopt test tools
 
       - name: start mypy
-        run: mypy moffopt test code_quality
+        run: mypy moffopt test tools
 
 
   test:
